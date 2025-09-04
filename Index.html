@@ -1,0 +1,107 @@
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Casino Roulette Game</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #2e8b57;
+      color: #fff;
+      text-align: center;
+      padding: 20px;
+    }
+    h1 {
+      margin-bottom: 10px;
+    }
+    .wheel {
+      margin: 20px auto;
+      width: 300px;
+      height: 300px;
+      border: 10px solid #fff;
+      border-radius: 50%;
+      position: relative;
+      background: conic-gradient(
+        red 0deg 30deg,
+        black 30deg 60deg,
+        red 60deg 90deg,
+        black 90deg 120deg,
+        red 120deg 150deg,
+        black 150deg 180deg,
+        red 180deg 210deg,
+        black 210deg 240deg,
+        red 240deg 270deg,
+        black 270deg 300deg,
+        red 300deg 330deg,
+        green 330deg 360deg
+      );
+    }
+    .pointer {
+      width: 0;
+      height: 0;
+      border-left: 20px solid transparent;
+      border-right: 20px solid transparent;
+      border-bottom: 30px solid yellow;
+      margin: 0 auto;
+    }
+    .bet-section {
+      margin-top: 30px;
+    }
+    input, select, button {
+      padding: 10px;
+      margin: 5px;
+      font-size: 16px;
+    }
+    #result {
+      font-size: 20px;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>🎲 Casino Roulette Game</h1>
+  <div class="pointer"></div>
+  <div class="wheel" id="wheel"></div>
+
+  <div class="bet-section">
+    <p>Choose a number to bet on (0 - 36):</p>
+    <input type="number" id="betNumber" min="0" max="36" />
+    <button onclick="spinRoulette()">Spin the Wheel</button>
+    <div id="result"></div>
+  </div>
+
+  <script>
+    const spinRoulette = () => {
+      const betInput = document.getElementById("betNumber");
+      const resultDiv = document.getElementById("result");
+      const wheel = document.getElementById("wheel");
+
+      const userBet = parseInt(betInput.value);
+
+      if (isNaN(userBet) || userBet < 0 || userBet > 36) {
+        resultDiv.textContent = "❌ Please enter a valid number between 0 and 36.";
+        return;
+      }
+
+      // Simulate spin
+      const winningNumber = Math.floor(Math.random() * 37); // 0-36
+      const degreesPerNumber = 360 / 37;
+      const angle = 3600 + winningNumber * degreesPerNumber; // 3600 = 10 full spins
+
+      // Animate spin
+      wheel.style.transition = "transform 4s ease-out";
+      wheel.style.transform = `rotate(${angle}deg)`;
+
+      // After animation
+      setTimeout(() => {
+        if (userBet === winningNumber) {
+          resultDiv.innerHTML = `🎉 You won! The ball landed on <strong>${winningNumber}</strong>.`;
+        } else {
+          resultDiv.innerHTML = `😞 You lost. The ball landed on <strong>${winningNumber}</strong>. Try again!`;
+        }
+      }, 4000);
+    };
+  </script>
+</body>
+</html>
